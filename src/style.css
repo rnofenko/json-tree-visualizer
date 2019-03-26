@@ -1,0 +1,41 @@
+.props {
+  font-size: 11px;
+  padding: 5px;
+}
+
+.prop {
+  white-space: nowrap;
+}
+
+.props .key {
+  width: 80px;
+  display: inline-block;
+}
+
+.list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  overflow: auto;
+}
+
+.connection {
+  text-align: center;
+}
+
+.node {
+  text-align: center;
+}
+
+.r0c0 {
+  background-color: antiquewhite;
+}
+.r0c1 {
+  background-color: lightcyan
+}
+.r1c0 {
+  background-color: lightgreen
+}
+.r1c1 {
+  background-color: lightslategrey
+}
