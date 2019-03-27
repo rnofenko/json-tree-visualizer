@@ -8,19 +8,21 @@
 }
 
 .props .key {
-  width: 80px;
+  width: 100px;
   display: inline-block;
+  text-align: left;
+}
+
+.props .value {
+  width: 120px;
+  display: inline-block;
+  text-align: left;
 }
 
 .list {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  overflow: auto;
-}
-
-.connection {
-  text-align: center;
 }
 
 .node {
@@ -38,4 +40,12 @@
 }
 .r1c1 {
   background-color: lightslategrey
+}
+
+.not-visible {
+  display: none;
+}
+
+a {
+  cursor: pointer;
 }

@@ -5,6 +5,37 @@
     return `r${row}c${col}`
   }
 
+  const isListCollapsed = (el) => {
+    return el.innerHTML === '-'
+  }
+
+  const changeSign = (el) => {
+    const newContent = isListCollapsed(el) ? '+' : '-'
+    el.innerHTML = newContent
+  }
+
+  const findListFromControl = (control) => {
+    const parent = control.parentNode
+    return parent.querySelector('.list')
+  }
+
+  const setListVisibility = (list, isVisible) => {
+    const className = 'not-visible'
+    if(isVisible) {
+      list.classList.remove(className)
+    } else {
+      list.classList.add(className)
+    }
+  }
+
+  const collapseExpand = (ev) => {
+    const { target } = ev
+    changeSign(target)
+    const isCollapsed = isListCollapsed(target)
+    const list = findListFromControl(target)
+    setListVisibility(list, isCollapsed)
+  }
+
   const buildProps = (props) => {
     let html = "<div class='props'>"
     for(let prop of props) {
@@ -20,55 +51,31 @@
     return html
   }
 
-  const createChildrenConnection = (list, rowLevel, colLevel) => {
-    const { connectionName } = list
-    if(!connectionName) {
-      return ""
-    }
-
-    const levelCode = getLevelCode(rowLevel, colLevel)
-    let html = "<div class='connection " + levelCode + "'>"
-    html += `<span>${connectionName}</span>`
-    html += "</div>"
-    return html
-  }
-
-  const buildChildren = (list, rowLevel, colLevel) => {
-    let html = "<div>"
-    const conn = createChildrenConnection(list, rowLevel, colLevel)
-    if(conn) {
-      rowLevel++
-      html += conn
-    }
-
-    html += "<div class='list'>"
-    colLevel = 0
-    for(let child of list) {
+  const buildChildren = (children, rowLevel) => {
+    let html = "<div class='list not-visible'>"
+    let colLevel = 0
+    for(let child of children) {
       html += buildNode(child, rowLevel, colLevel)
       colLevel++
     }
-
-    html += "</div>"
     html += "</div>"
     return html
   }
 
-  const buildListOfChildren = (children, rowLevel) => {
-    let html = "<div class='list'>"
-    let colLevel = 0
-    for(let child of children) {
-      html += buildChildren(child, rowLevel, colLevel)
-      colLevel++
+  const buildControls = (childrenCount) => {
+    if(!childrenCount) {
+      return ""
     }
-    html += "</div>"
-    return html
+    const link = "<a class='control'>+</a>"
+    return childrenCount + " " + link
   }
 
   function buildNode(root, rowLevel, colLevel) {
     const levelCode = getLevelCode(rowLevel, colLevel) 
     let html = "<div class='node " + levelCode + "'>"
     html += buildProps(root.props)
-    html += buildListOfChildren(root.children, rowLevel + 1)
+    html += buildControls(root.children.length)
+    html += buildChildren(root.children, rowLevel + 1)
     html += "</div>"
     return html
   }
@@ -77,6 +84,11 @@
     const html = buildNode(root, 0, 0)
     const el = document.getElementById(docId)
     el.innerHTML = html
+
+    const controls = document.getElementsByClassName('control')
+    for (var i = 0; i < controls.length; i++) {
+      controls[i].addEventListener('click', collapseExpand, false);
+    }
   }
 
   ns.draw = draw

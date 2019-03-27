@@ -1,15 +1,9 @@
 (function( ns ) {
 
   function parseChildren(name, json) {
-    const children = []
-    children.connectionName = name
-
-    for(const el of json) {
-      const parsed = jsonToTree(el)
-      children.push(parsed)
-    }
-
-    return children
+    const children = json.map(el => jsonToTree(el))
+    const props = [ { key: 'col', value: name } ]
+    return { props, children }
   }
 
   function parseNode(json) {
