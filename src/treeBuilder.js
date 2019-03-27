@@ -12,7 +12,7 @@
     return children
   }
 
-  function jsonToTree(json) {
+  function parseNode(json) {
     const props = []
     const children = []
 
@@ -29,6 +29,14 @@
       }
     }
     return { props, children }
+  }
+
+  function jsonToTree(json) {
+    if(Array.isArray(json)) {
+      return jsonToTree( { name: 'ROOT', forest: json } )
+    }
+
+    return parseNode(json)
   }
 
   ns.jsonToTree = jsonToTree
